@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  redis-sentinel-1:
+    image: redis
+    container_name: redis-sentinel-1
+    restart: always
+    # 为了规避Docker中端口映射可能带来的问题
+    # 这里选择使用host网络
+    network_mode: host
+    volumes:
+      - ./redis-sentinel-1.conf:/usr/local/etc/redis/redis-sentinel.conf
+    # 指定时区，保证容器内时间正确
+    environment:
+      TZ: "Asia/Shanghai"
+    command: ["redis-sentinel", "/usr/local/etc/redis/redis-sentinel.conf"]
+  redis-sentinel-2:
+    image: redis
+    container_name: redis-sentinel-2
+    restart: always
+    network_mode: host
+    volumes:
+      - ./redis-sentinel-2.conf:/usr/local/etc/redis/redis-sentinel.conf
+    environment:
+      TZ: "Asia/Shanghai"
+    command: ["redis-sentinel", "/usr/local/etc/redis/redis-sentinel.conf"]
+  redis-sentinel-3:
+    image: redis
+    container_name: redis-sentinel-3
+    restart: always
+    network_mode: host
+    volumes:
+      - ./redis-sentinel-3.conf:/usr/local/etc/redis/redis-sentinel.conf
+    environment:
+      TZ: "Asia/Shanghai"
+    command: ["redis-sentinel", "/usr/local/etc/redis/redis-sentinel.conf"]

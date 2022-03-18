@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  # 主节点的容器
+  redis-server-master:
+    image: redis
+    container_name: redis-server-master
+    restart: always
+    # 为了规避Docker中端口映射可能带来的问题
+    # 这里选择使用host网络
+    network_mode: host
+    # 指定时区，保证容器内时间正确
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      # 映射配置文件和数据目录
+      - ./redis-master.conf:/usr/local/etc/redis/redis.conf
+      - ./data/redis-master:/data
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+  # 从节点1的容器
+  redis-server-slave-1:
+    image: redis
+    container_name: redis-server-slave-1
+    restart: always
+    network_mode: host
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis-slave1.conf:/usr/local/etc/redis/redis.conf
+      - ./data/redis-slave-1:/data
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+  # 从节点2的容器
+  redis-server-slave-2:
+    image: redis
+    container_name: redis-server-slave-2
+    restart: always
+    network_mode: host
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis-slave2.conf:/usr/local/etc/redis/redis.conf
+      - ./data/redis-slave-2:/data
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
