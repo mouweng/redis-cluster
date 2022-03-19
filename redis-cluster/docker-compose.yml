@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  redis-6371:
+    image: redis
+    container_name: redis-6371
+    restart: always
+    network_mode: host
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./conf/redis-6371.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+  redis-6372:
+    image: redis
+    container_name: redis-6372
+    restart: always
+    network_mode: host
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./conf/redis-6372.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+  redis-6373:
+    image: redis
+    container_name: redis-6373
+    restart: always
+    network_mode: host
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./conf/redis-6373.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
